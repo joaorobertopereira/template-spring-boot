@@ -1,0 +1,293 @@
+openapi: 3.0.3
+info:
+  title: Template Kotlin API
+  description: Spring Boot 3.5 Kotlin template API with modular architecture
+  version: 1.0.0
+  contact:
+    name: Team
+    email: team@example.com
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:8080
+    description: Local development
+
+tags:
+  - name: Health
+    description: Health check endpoints
+  - name: Resource
+    description: Resource management endpoints
+
+paths:
+  /api/health:
+    get:
+      tags:
+        - Health
+      operationId: healthCheck
+      summary: Health check
+      description: Returns API status and current thread info
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /api/v1/resources:
+    get:
+      tags:
+        - Resource
+      operationId: listResources
+      summary: List all resources
+      description: Returns a paginated list of resources
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResourceResponse'
+
+    post:
+      tags:
+        - Resource
+      operationId: createResource
+      summary: Create a new resource
+      description: Creates a new resource and returns it
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateResourceRequest'
+      responses:
+        '201':
+          description: Resource created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Resource already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/resources/{id}:
+    get:
+      tags:
+        - Resource
+      operationId: getResourceById
+      summary: Get a resource by ID
+      description: Returns a single resource
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      tags:
+        - Resource
+      operationId: updateResource
+      summary: Update a resource
+      description: Updates an existing resource
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateResourceRequest'
+      responses:
+        '200':
+          description: Resource updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - Resource
+      operationId: deleteResource
+      summary: Delete a resource
+      description: Deletes a resource by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Resource deleted successfully
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - thread
+      properties:
+        status:
+          type: string
+          example: UP
+        thread:
+          type: string
+          example: VirtualThread[#31]/runnable@ForkJoinPool-1-worker-1
+
+    CreateResourceRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          example: My Resource
+        description:
+          type: string
+          maxLength: 1000
+          example: A sample resource
+
+    UpdateResourceRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          example: Updated Resource
+        description:
+          type: string
+          maxLength: 1000
+          example: Updated description
+
+    ResourceResponse:
+      type: object
+      required:
+        - id
+        - name
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    PagedResourceResponse:
+      type: object
+      required:
+        - content
+        - page
+        - size
+        - totalElements
+        - totalPages
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceResponse'
+        page:
+          type: integer
+        size:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - error
+        - message
+      properties:
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
