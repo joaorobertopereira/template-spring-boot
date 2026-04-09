@@ -1,0 +1,253 @@
+{
+  "metadata": {
+    "project_name": "My API Project",
+    "version": "1.0.0",
+    "status": "draft",
+    "created_at": "2026-04-09",
+    "updated_at": "2026-04-09",
+    "authors": ["Product Owner"],
+    "tags": ["api", "mvp"]
+  },
+  "executive_summary": {
+    "vision": "Describe the product vision and what problem it solves",
+    "value_proposition": "Why this solution is valuable to users",
+    "objectives": [
+      {
+        "description": "Primary business objective",
+        "metric": "Revenue / Users / Engagement",
+        "target": "Specific measurable target"
+      }
+    ],
+    "success_criteria": [
+      "Criterion 1: e.g., API response time < 200ms p95",
+      "Criterion 2: e.g., 99.9% uptime"
+    ]
+  },
+  "problem_statement": {
+    "description": "High-level description of the problem being solved",
+    "current_situation": "How things work today without this solution",
+    "pain_points": [
+      {
+        "problem": "Specific pain point",
+        "impact": "Business or user impact",
+        "affected_users": "Who is affected"
+      }
+    ],
+    "opportunity": "Market opportunity or business case",
+    "cost_of_inaction": "What happens if we don't build this"
+  },
+  "solution_overview": {
+    "description": "How the solution works end-to-end",
+    "core_concept": "The fundamental idea behind the solution",
+    "differentiators": [
+      "What makes this solution unique"
+    ],
+    "technical_approach": "High-level technical strategy",
+    "key_decisions": [
+      {
+        "decision": "e.g., Use event-driven architecture",
+        "rationale": "Why this approach was chosen",
+        "alternatives_considered": ["Alternative A", "Alternative B"]
+      }
+    ]
+  },
+  "personas": [
+    {
+      "name": "Alex",
+      "role": "API Consumer / Developer",
+      "description": "Backend developer integrating with the API",
+      "technical_proficiency": "advanced",
+      "needs": ["Clear documentation", "Consistent API contracts"],
+      "pain_points": ["Unclear error messages", "Breaking changes"],
+      "goals": ["Fast integration", "Reliable service"]
+    }
+  ],
+  "technical_architecture": {
+    "overview": "Modular Spring Boot application with layered architecture",
+    "components": [
+      {
+        "name": "REST Controllers",
+        "responsibility": "Handle HTTP requests and responses",
+        "module": "api",
+        "technology": "Spring Web"
+      },
+      {
+        "name": "Use Cases",
+        "responsibility": "Orchestrate business operations",
+        "module": "application",
+        "technology": "Kotlin"
+      },
+      {
+        "name": "Domain Entities",
+        "responsibility": "Core business rules and invariants",
+        "module": "core",
+        "technology": "Kotlin"
+      },
+      {
+        "name": "Repositories",
+        "responsibility": "Data persistence and queries",
+        "module": "data",
+        "technology": "Spring Data JPA"
+      },
+      {
+        "name": "External Clients",
+        "responsibility": "Integration with external services",
+        "module": "infra",
+        "technology": "RestClient"
+      },
+      {
+        "name": "Exception Handling",
+        "responsibility": "Global error handling and logging",
+        "module": "cross-cutting",
+        "technology": "Spring AOP"
+      }
+    ],
+    "tech_stack": {
+      "language": "Kotlin 2.1",
+      "framework": "Spring Boot 3.5",
+      "database": "PostgreSQL",
+      "messaging": "",
+      "cache": "",
+      "observability": "Spring Actuator + Micrometer",
+      "other": ["Virtual Threads", "Gradle 8.12"]
+    },
+    "integrations": [],
+    "scalability_considerations": [
+      "Virtual threads for high-concurrency workloads",
+      "Stateless API for horizontal scaling"
+    ],
+    "security_considerations": [
+      "Input validation on all endpoints",
+      "Authentication and authorization"
+    ]
+  },
+  "functional_requirements": [
+    {
+      "id": "FR-001",
+      "title": "Example Feature",
+      "priority": "P0",
+      "user_story": "As a [user], I want to [action] so that [benefit]",
+      "acceptance_criteria": [
+        "Given [context], when [action], then [result]",
+        "Given [context], when [action], then [result]"
+      ],
+      "module": "api",
+      "depends_on": [],
+      "notes": "Additional context or constraints"
+    }
+  ],
+  "api_specifications": [
+    {
+      "method": "GET",
+      "path": "/api/v1/resources",
+      "description": "List all resources with pagination",
+      "request_body": {},
+      "response_body": {
+        "content": [{"id": "string", "name": "string"}],
+        "page": 0,
+        "size": 20,
+        "total_elements": 0
+      },
+      "status_codes": [
+        {"code": 200, "description": "Success"},
+        {"code": 400, "description": "Invalid query parameters"},
+        {"code": 500, "description": "Internal server error"}
+      ],
+      "authentication_required": true,
+      "rate_limit": "100 requests/minute"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/resources",
+      "description": "Create a new resource",
+      "request_body": {
+        "name": "string (required)",
+        "description": "string (optional)"
+      },
+      "response_body": {
+        "id": "string",
+        "name": "string",
+        "created_at": "datetime"
+      },
+      "status_codes": [
+        {"code": 201, "description": "Created successfully"},
+        {"code": 400, "description": "Validation error"},
+        {"code": 409, "description": "Resource already exists"},
+        {"code": 500, "description": "Internal server error"}
+      ],
+      "authentication_required": true,
+      "rate_limit": "50 requests/minute"
+    }
+  ],
+  "data_models": [
+    {
+      "name": "Resource",
+      "description": "Example domain entity",
+      "fields": [
+        {"name": "id", "type": "UUID", "required": true, "constraints": "Primary key", "description": "Unique identifier"},
+        {"name": "name", "type": "String", "required": true, "constraints": "Max 255 chars, unique", "description": "Resource name"},
+        {"name": "description", "type": "String", "required": false, "constraints": "Max 1000 chars", "description": "Optional description"},
+        {"name": "created_at", "type": "Instant", "required": true, "constraints": "Auto-generated", "description": "Creation timestamp"},
+        {"name": "updated_at", "type": "Instant", "required": true, "constraints": "Auto-updated", "description": "Last update timestamp"}
+      ],
+      "relationships": [],
+      "indexes": ["idx_resource_name ON name"]
+    }
+  ],
+  "implementation_plan": {
+    "phases": [
+      {
+        "name": "Phase 1 - MVP",
+        "description": "Core functionality with basic CRUD operations",
+        "duration": "2 sprints",
+        "tasks": [
+          {"title": "Setup project structure", "effort": "1 day", "module": "all", "depends_on": [], "requirement_ids": []},
+          {"title": "Implement domain entities", "effort": "2 days", "module": "core", "depends_on": [], "requirement_ids": ["FR-001"]},
+          {"title": "Implement use cases", "effort": "3 days", "module": "application", "depends_on": ["Implement domain entities"], "requirement_ids": ["FR-001"]},
+          {"title": "Implement API endpoints", "effort": "2 days", "module": "api", "depends_on": ["Implement use cases"], "requirement_ids": ["FR-001"]},
+          {"title": "Implement data layer", "effort": "2 days", "module": "data", "depends_on": ["Implement domain entities"], "requirement_ids": ["FR-001"]}
+        ],
+        "deliverables": ["Working CRUD API", "Database migrations", "API documentation"]
+      }
+    ],
+    "risks": [
+      {
+        "description": "Example risk",
+        "probability": "medium",
+        "impact": "high",
+        "mitigation": "Mitigation strategy"
+      }
+    ]
+  },
+  "success_metrics": [
+    {
+      "kpi": "API Response Time (p95)",
+      "target": "< 200ms",
+      "measurement_method": "Application metrics via Actuator/Micrometer",
+      "review_interval": "weekly"
+    },
+    {
+      "kpi": "Error Rate",
+      "target": "< 0.1%",
+      "measurement_method": "Log aggregation and monitoring",
+      "review_interval": "daily"
+    }
+  ],
+  "non_functional_requirements": [
+    {
+      "category": "performance",
+      "requirement": "API response time under load",
+      "target": "< 200ms p95 at 1000 concurrent requests"
+    },
+    {
+      "category": "reliability",
+      "requirement": "Service availability",
+      "target": "99.9% uptime"
+    },
+    {
+      "category": "security",
+      "requirement": "Authentication on all endpoints",
+      "target": "OAuth2/JWT based authentication"
+    }
+  ]
+}

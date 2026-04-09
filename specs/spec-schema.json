@@ -1,0 +1,296 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Spec Document",
+  "description": "Structured spec document generated from PRD brainstorm process. Used as the single source of truth for development.",
+  "type": "object",
+  "required": ["metadata", "executive_summary", "problem_statement", "solution_overview", "personas", "technical_architecture", "functional_requirements", "api_specifications", "data_models", "implementation_plan", "success_metrics"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["project_name", "version", "status", "created_at", "updated_at", "authors"],
+      "properties": {
+        "project_name": { "type": "string" },
+        "version": { "type": "string" },
+        "status": { "type": "string", "enum": ["draft", "review", "approved", "in_progress", "completed"] },
+        "created_at": { "type": "string", "format": "date" },
+        "updated_at": { "type": "string", "format": "date" },
+        "authors": { "type": "array", "items": { "type": "string" } },
+        "tags": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "executive_summary": {
+      "type": "object",
+      "required": ["vision", "objectives", "success_criteria"],
+      "properties": {
+        "vision": { "type": "string" },
+        "value_proposition": { "type": "string" },
+        "objectives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["description", "metric", "target"],
+            "properties": {
+              "description": { "type": "string" },
+              "metric": { "type": "string" },
+              "target": { "type": "string" }
+            }
+          }
+        },
+        "success_criteria": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "problem_statement": {
+      "type": "object",
+      "required": ["description", "pain_points"],
+      "properties": {
+        "description": { "type": "string" },
+        "current_situation": { "type": "string" },
+        "pain_points": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["problem", "impact"],
+            "properties": {
+              "problem": { "type": "string" },
+              "impact": { "type": "string" },
+              "affected_users": { "type": "string" }
+            }
+          }
+        },
+        "opportunity": { "type": "string" },
+        "cost_of_inaction": { "type": "string" }
+      }
+    },
+    "solution_overview": {
+      "type": "object",
+      "required": ["description", "core_concept"],
+      "properties": {
+        "description": { "type": "string" },
+        "core_concept": { "type": "string" },
+        "differentiators": { "type": "array", "items": { "type": "string" } },
+        "technical_approach": { "type": "string" },
+        "key_decisions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "decision": { "type": "string" },
+              "rationale": { "type": "string" },
+              "alternatives_considered": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "personas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "role", "needs"],
+        "properties": {
+          "name": { "type": "string" },
+          "role": { "type": "string" },
+          "description": { "type": "string" },
+          "technical_proficiency": { "type": "string", "enum": ["beginner", "intermediate", "advanced", "expert"] },
+          "needs": { "type": "array", "items": { "type": "string" } },
+          "pain_points": { "type": "array", "items": { "type": "string" } },
+          "goals": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "technical_architecture": {
+      "type": "object",
+      "required": ["components"],
+      "properties": {
+        "overview": { "type": "string" },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "responsibility", "module"],
+            "properties": {
+              "name": { "type": "string" },
+              "responsibility": { "type": "string" },
+              "module": { "type": "string", "enum": ["api", "application", "core", "infra", "cross-cutting", "data"] },
+              "technology": { "type": "string" }
+            }
+          }
+        },
+        "tech_stack": {
+          "type": "object",
+          "properties": {
+            "language": { "type": "string" },
+            "framework": { "type": "string" },
+            "database": { "type": "string" },
+            "messaging": { "type": "string" },
+            "cache": { "type": "string" },
+            "observability": { "type": "string" },
+            "other": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "integrations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "type": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "scalability_considerations": { "type": "array", "items": { "type": "string" } },
+        "security_considerations": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "functional_requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "priority", "user_story"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "priority": { "type": "string", "enum": ["P0", "P1", "P2", "P3"] },
+          "user_story": { "type": "string" },
+          "acceptance_criteria": { "type": "array", "items": { "type": "string" } },
+          "module": { "type": "string", "enum": ["api", "application", "core", "infra", "cross-cutting", "data"] },
+          "depends_on": { "type": "array", "items": { "type": "string" } },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "api_specifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["method", "path", "description"],
+        "properties": {
+          "method": { "type": "string", "enum": ["GET", "POST", "PUT", "PATCH", "DELETE"] },
+          "path": { "type": "string" },
+          "description": { "type": "string" },
+          "request_body": { "type": "object" },
+          "response_body": { "type": "object" },
+          "status_codes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": { "type": "integer" },
+                "description": { "type": "string" }
+              }
+            }
+          },
+          "authentication_required": { "type": "boolean" },
+          "rate_limit": { "type": "string" }
+        }
+      }
+    },
+    "data_models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "fields"],
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "type"],
+              "properties": {
+                "name": { "type": "string" },
+                "type": { "type": "string" },
+                "required": { "type": "boolean" },
+                "constraints": { "type": "string" },
+                "description": { "type": "string" }
+              }
+            }
+          },
+          "relationships": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "target": { "type": "string" },
+                "type": { "type": "string", "enum": ["one-to-one", "one-to-many", "many-to-many"] },
+                "description": { "type": "string" }
+              }
+            }
+          },
+          "indexes": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "implementation_plan": {
+      "type": "object",
+      "required": ["phases"],
+      "properties": {
+        "phases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "tasks"],
+            "properties": {
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "duration": { "type": "string" },
+              "tasks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["title", "effort"],
+                  "properties": {
+                    "title": { "type": "string" },
+                    "effort": { "type": "string" },
+                    "module": { "type": "string" },
+                    "depends_on": { "type": "array", "items": { "type": "string" } },
+                    "requirement_ids": { "type": "array", "items": { "type": "string" } }
+                  }
+                }
+              },
+              "deliverables": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "risks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "description": { "type": "string" },
+              "probability": { "type": "string", "enum": ["low", "medium", "high"] },
+              "impact": { "type": "string", "enum": ["low", "medium", "high"] },
+              "mitigation": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "success_metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kpi", "target"],
+        "properties": {
+          "kpi": { "type": "string" },
+          "target": { "type": "string" },
+          "measurement_method": { "type": "string" },
+          "review_interval": { "type": "string" }
+        }
+      }
+    },
+    "non_functional_requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "category": { "type": "string", "enum": ["performance", "security", "reliability", "scalability", "usability", "compliance"] },
+          "requirement": { "type": "string" },
+          "target": { "type": "string" }
+        }
+      }
+    }
+  }
+}
